@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TikTok CLI | Fast Native TikTok Scraping & Search CLI in Rust</title>
+  <meta name="description" content="A blazing fast native command-line tool and agent interface for scraping TikTok videos, user profiles, hashtags, and search results via Apify, written in Rust.">
+  <link rel="canonical" href="https://spacecorps.github.io/TikTok-Cli/">
+  <meta name="is-agentic-site-type" content="content">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="keywords" content="TikTok, CLI, Rust, Apify, web scraping, TikTok scraper, hashtags, video metadata, LLM agents, AI social search, DevOps">
+  <meta name="author" content="SpaceCorps">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://spacecorps.github.io/TikTok-Cli/">
+  <meta property="og:title" content="TikTok CLI | Fast Native TikTok Scraping & Search CLI in Rust">
+  <meta property="og:description" content="A blazing fast native command-line tool and agent interface for scraping TikTok videos, user profiles, hashtags, and search results via Apify, written in Rust.">
+  <meta property="og:image" content="https://spacecorps.github.io/TikTok-Cli/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="TikTok CLI — Native Rust Command Line Tool">
+  <meta property="og:site_name" content="TikTok CLI">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://spacecorps.github.io/TikTok-Cli/">
+  <meta name="twitter:title" content="TikTok CLI | Fast Native TikTok Scraping & Search CLI in Rust">
+  <meta name="twitter:description" content="A blazing fast native command-line tool and agent interface for scraping TikTok videos, user profiles, hashtags, and search results via Apify, written in Rust.">
+  <meta name="twitter:image" content="https://spacecorps.github.io/TikTok-Cli/og-image.png">
+
+  <!-- AI Agents & Discovery -->
+  <link rel="alternate" type="text/markdown" href="https://spacecorps.github.io/TikTok-Cli/index.md" title="Markdown Homepage">
+  <link rel="alternate" type="text/markdown" href="https://spacecorps.github.io/TikTok-Cli/llms.txt" title="LLMs.txt">
+  <link rel="sitemap" type="application/xml" href="https://spacecorps.github.io/TikTok-Cli/sitemap.xml" title="Sitemap">
+  <script>
+    if (new URLSearchParams(window.location.search).get('mode') === 'agent') {
+      window.location.href = 'llms.txt';
+    }
+  </script>
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "name": "TikTok CLI",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "macOS, Linux, Windows",
+        "url": "https://spacecorps.github.io/TikTok-Cli/",
+        "description": "A blazing fast native command-line tool and agent interface for scraping TikTok videos, user profiles, hashtags, and search results via Apify, written in Rust.",
+        "softwareVersion": "1.0.0",
+        "downloadUrl": "https://github.com/SpaceCorps/TikTok-Cli/releases/tag/v1.0.0",
+        "license": "https://opensource.org/licenses/MIT",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "author": {
+          "@type": "Organization",
+          "name": "SpaceCorps",
+          "url": "https://github.com/SpaceCorps"
+        }
+      },
+      {
+        "@type": "Organization",
+        "name": "SpaceCorps",
+        "url": "https://github.com/SpaceCorps",
+        "sameAs": [
+          "https://github.com/SpaceCorps/TikTok-Cli",
+          "https://github.com/SpaceCorps"
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "technical support",
+          "url": "https://github.com/SpaceCorps/TikTok-Cli/issues"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "US"
+        }
+      }
+    ]
+  }
+  </script>
+  <style>
+    :root {
+      --bg: #090d16;
+      --bg-card: rgba(22, 27, 46, 0.7);
+      --bg-card-hover: rgba(30, 38, 66, 0.85);
+      --border: rgba(255, 255, 255, 0.1);
+      --border-accent: rgba(254, 44, 85, 0.35);
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --primary: #fe2c55;
+      --primary-hover: #e02447;
+      --primary-glow: rgba(254, 44, 85, 0.25);
+      --accent: #25f4ee;
+      --success: #10b981;
+      --code-bg: #0d1117;
+      --radius: 12px;
+      --radius-sm: 8px;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-image: 
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(254, 44, 85, 0.15), transparent),
+        radial-gradient(circle 400px at 90% 20%, rgba(37, 244, 238, 0.08), transparent);
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+    a:hover {
+      color: #a5fbf8;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Header */
+    header {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: rgba(9, 13, 22, 0.85);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: #fff;
+    }
+    .logo-badge {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff;
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+    .nav-links a:hover {
+      color: #fff;
+    }
+    .btn-github {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border);
+      color: #fff !important;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+    .btn-github:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 80px 0 60px;
+      text-align: center;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      background: rgba(254, 44, 85, 0.12);
+      border: 1px solid var(--border-accent);
+      color: #fecdd3;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 20px;
+      background: linear-gradient(180deg, #ffffff 30%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: clamp(1.1rem, 2vw, 1.25rem);
+      color: var(--text-muted);
+      max-width: 680px;
+      margin: 0 auto 36px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #fff !important;
+      box-shadow: 0 4px 20px var(--primary-glow);
+    }
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: #fff !important;
+    }
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Terminal Code Block */
+    .terminal-box {
+      max-width: 720px;
+      margin: 0 auto 60px;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      text-align: left;
+    }
+    .terminal-header {
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .terminal-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+    .terminal-dot.red { background: #ef4444; }
+    .terminal-dot.yellow { background: #f59e0b; }
+    .terminal-dot.green { background: #10b981; }
+    .terminal-body {
+      padding: 20px;
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+    .cmd-line {
+      display: flex;
+      gap: 12px;
+      color: #cbd5e1;
+    }
+    .cmd-prompt {
+      color: var(--primary);
+      user-select: none;
+    }
+    .cmd-comment {
+      color: var(--text-dim);
+      margin-top: 8px;
+    }
+
+    /* Features Grid */
+    .section-title {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .section-title h2 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+    .section-title p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-bottom: 80px;
+    }
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      transition: all 0.2s ease;
+      backdrop-filter: blur(8px);
+    }
+    .card:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+    .card-icon {
+      font-size: 2rem;
+      margin-bottom: 16px;
+      display: inline-block;
+    }
+    .card h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+    .card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* Commands Table */
+    .commands-section {
+      margin-bottom: 80px;
+    }
+    .table-wrapper {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+    th, td {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    th {
+      background: rgba(255, 255, 255, 0.03);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    td {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    code {
+      font-family: var(--font-mono);
+      background: rgba(255, 255, 255, 0.08);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #fed7aa;
+      font-size: 0.88rem;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 48px 0;
+      margin-top: auto;
+      background: rgba(9, 13, 22, 0.95);
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr repeat(3, 1fr);
+      gap: 40px;
+      margin-bottom: 36px;
+    }
+    .footer-brand p {
+      color: var(--text-dim);
+      font-size: 0.9rem;
+      margin-top: 12px;
+      max-width: 320px;
+    }
+    .footer-col h4 {
+      color: #fff;
+      font-size: 0.95rem;
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .footer-col a {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    .footer-col a:hover {
+      color: #fff;
+    }
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      color: var(--text-dim);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 768px) {
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      .nav-links {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container nav">
+      <div class="logo">
+        <span>🎵 TikTok CLI</span>
+        <span class="logo-badge">Rust 2024</span>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#commands">Commands</a></li>
+        <li><a href="llms.txt">Agent Docs (llms.txt)</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li>
+          <a href="https://github.com/SpaceCorps/TikTok-Cli" class="btn-github" target="_blank" rel="noopener noreferrer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            GitHub
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="pill">
+          <span>⚡ High-Performance TikTok Scraper & Agent Discovery</span>
+        </div>
+        <h1>Scrape TikTok Videos, Profiles & Trends from Your Terminal</h1>
+        <p>A native, sub-3ms Rust CLI for scraping videos, hashtags, profiles, and search results via Apify. Built for data pipelines and LLM agent consumption.</p>
+        
+        <div class="hero-actions">
+          <a href="#quickstart" class="btn btn-primary">Get Started</a>
+          <a href="llms.txt" class="btn btn-secondary">Read llms.txt</a>
+          <a href="https://github.com/SpaceCorps/TikTok-Cli" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">View on GitHub</a>
+        </div>
+
+        <div class="terminal-box" id="quickstart">
+          <div class="terminal-header">
+            <span class="terminal-dot red"></span>
+            <span class="terminal-dot yellow"></span>
+            <span class="terminal-dot green"></span>
+          </div>
+          <div class="terminal-body">
+            <div class="cmd-comment"># Install via Cargo</div>
+            <div class="cmd-line"><span class="cmd-prompt">$</span> <span>cargo install --git https://github.com/SpaceCorps/TikTok-Cli --locked</span></div>
+            <div class="cmd-comment"># Authenticate interactively via Apify token</div>
+            <div class="cmd-line"><span class="cmd-prompt">$</span> <span>tiktok login</span></div>
+            <div class="cmd-comment"># Scrape videos from a creator profile</div>
+            <div class="cmd-line"><span class="cmd-prompt">$</span> <span>tiktok profile nike --limit 10</span></div>
+            <div class="cmd-comment"># Scrape trending videos by hashtag</div>
+            <div class="cmd-line"><span class="cmd-prompt">$</span> <span>tiktok hashtag "coding" --limit 5</span></div>
+            <div class="cmd-comment"># Search TikTok for user accounts in JSON mode</div>
+            <div class="cmd-line"><span class="cmd-prompt">$</span> <span>tiktok search "tech" --users --profiles 5 --json</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="container" id="features">
+      <div class="section-title">
+        <h2>Engineered for Developers & AI Agents</h2>
+        <p>Combining the reliability of Apify scrapers with the speed of native Rust.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="card">
+          <div class="card-icon">⚡</div>
+          <h3>Sub-3ms Cold Starts</h3>
+          <p>Single standalone static binary compiled with Rust 2024. Zero interpreter startup overhead, zero virtual environment lags.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🤖</div>
+          <h3>Agentic Protocol</h3>
+          <p>Clean YAML output by default for humans, structured JSON with <code>--json</code> for agent tool loops, and deterministic exit codes.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔒</div>
+          <h3>Native OS Keystore</h3>
+          <p>API tokens are stored in macOS Keychain, Windows DPAPI, or Linux Secret Service. Credentials never touch disk in plain text.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">👥</div>
+          <h3>Multi-Account Management</h3>
+          <p>Isolate environments, teams, or client configurations with <code>--account &lt;name&gt;</code> and audit accounts with <code>tiktok accounts list --check</code>.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔍</div>
+          <h3>Deep Search & Discovery</h3>
+          <p>Search video content, top trends, or creator profiles directly from the command line with <code>tiktok search</code>.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">📊</div>
+          <h3>Rich Metadata & Comments</h3>
+          <p>Extract video URLs, captions, transcripts, sound IDs, engagement counts, and comment threads in clean structured output.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Commands Table -->
+    <section class="container commands-section" id="commands">
+      <div class="section-title">
+        <h2>Command Reference</h2>
+        <p>Intuitive commands designed for direct scripting and autonomous agent invocation.</p>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Command</th>
+              <th>Description</th>
+              <th>Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>tiktok profile &lt;USERNAMES&gt;</code></td>
+              <td>Scrape videos from TikTok profiles with sort, date, and comment filters.</td>
+              <td><code>tiktok profile nike --limit 10</code></td>
+            </tr>
+            <tr>
+              <td><code>tiktok hashtag &lt;HASHTAGS&gt;</code></td>
+              <td>Scrape videos by hashtag with limit and comments options.</td>
+              <td><code>tiktok hashtag "coding" --limit 5</code></td>
+            </tr>
+            <tr>
+              <td><code>tiktok search &lt;QUERIES&gt;</code></td>
+              <td>Search TikTok for videos or users (via <code>--users</code>).</td>
+              <td><code>tiktok search "tech" --users --profiles 5</code></td>
+            </tr>
+            <tr>
+              <td><code>tiktok video &lt;URLS&gt;</code></td>
+              <td>Scrape specific TikTok videos by URL and related videos.</td>
+              <td><code>tiktok video https://www.tiktok.com/@u/video/123</code></td>
+            </tr>
+            <tr>
+              <td><code>tiktok accounts &lt;SUB&gt;</code></td>
+              <td>Manage stored accounts (<code>add</code>, <code>list</code>, <code>test</code>, <code>remove</code>).</td>
+              <td><code>tiktok accounts list --check</code></td>
+            </tr>
+            <tr>
+              <td><code>tiktok login [&lt;NAME&gt;]</code></td>
+              <td>Interactive browser login saving token to native keystore.</td>
+              <td><code>tiktok login</code></td>
+            </tr>
+            <tr>
+              <td><code>tiktok agent-readme</code></td>
+              <td>Display the complete agent operating manual and exit code definitions.</td>
+              <td><code>tiktok agent-readme --json</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo">
+            <span>🎵 TikTok CLI</span>
+          </div>
+          <p>A high-performance native command-line tool and agent interface for scraping TikTok videos, profiles, hashtags, and search results via Apify.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Commands</h4>
+          <ul>
+            <li><a href="#commands">Profile Scraping</a></li>
+            <li><a href="#commands">Hashtag Scraping</a></li>
+            <li><a href="#commands">Search</a></li>
+            <li><a href="#commands">Video Metadata</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Agent & Docs</h4>
+          <ul>
+            <li><a href="llms.txt">llms.txt</a></li>
+            <li><a href="llms-full.txt">Full Agent Manual</a></li>
+            <li><a href="auth.md">Authentication Guide</a></li>
+            <li><a href="pricing.md">Pricing & Licensing</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Project & Trust</h4>
+          <ul>
+            <li><a href="about.html">About Project</a></li>
+            <li><a href="contact.html">Contact & Support</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="https://github.com/SpaceCorps/TikTok-Cli" target="_blank" rel="noopener noreferrer">GitHub Repository</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 SpaceCorps. Released under the MIT License.</p>
+        <p>Ported from Niels Bosma's prototype to high-performance native Rust.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

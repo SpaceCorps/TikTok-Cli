@@ -1,0 +1,11 @@
+{
+  "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+  "skills": [
+    {
+      "name": "tiktok-cli",
+      "description": "Scrape TikTok videos, user profiles, hashtags, and search results into YAML or JSON format via Apify using the native Rust TikTok CLI.",
+      "type": "skill-md",
+      "url": "https://spacecorps.github.io/TikTok-Cli/llms.txt"
+    }
+  ]
+}

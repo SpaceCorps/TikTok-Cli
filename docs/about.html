@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About · TikTok CLI</title>
+  <meta name="description" content="About TikTok CLI: An open source native Rust command-line tool and agent interface for scraping TikTok videos, profiles, hashtags, and search results via Apify.">
+  <link rel="canonical" href="https://spacecorps.github.io/TikTok-Cli/about.html">
+  <meta property="og:title" content="About · TikTok CLI">
+  <meta property="og:description" content="About TikTok CLI: An open source native Rust command-line tool and agent interface for scraping TikTok videos, profiles, hashtags, and search results via Apify.">
+  <meta property="og:url" content="https://spacecorps.github.io/TikTok-Cli/about.html">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://spacecorps.github.io/TikTok-Cli/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="is-agentic-site-type" content="content">
+  <style>
+    body { background: #090d16; color: #f1f5f9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.7; padding: 40px 20px; }
+    .content-box { max-width: 800px; margin: 0 auto; background: rgba(22, 27, 46, 0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 40px; }
+    h1 { font-size: 2.2rem; margin-bottom: 20px; color: #fff; }
+    h2 { font-size: 1.4rem; margin-top: 30px; margin-bottom: 12px; color: #38bdf8; }
+    p { margin-bottom: 16px; color: #94a3b8; }
+    a { color: #38bdf8; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .back { display: inline-block; margin-bottom: 24px; color: #6366f1; font-weight: 500; }
+  </style>
+</head>
+<body>
+  <div class="content-box">
+    <a href="./" class="back">&larr; Back to TikTok CLI</a>
+    <h1>About TikTok CLI</h1>
+    
+    <p>TikTok CLI is a high-performance, open-source command-line tool and programmatic automation interface designed for scraping TikTok videos, user profiles, hashtags, and search results via Apify's actor platform. Maintained under the SpaceCorps open-source organization, the project provides developers, data engineers, and autonomous AI agents with a single, standalone binary capable of operating seamlessly across macOS, Linux, and Windows without runtime dependencies or interpreter overhead.</p>
+
+    <h2>Project Lineage & Motivation</h2>
+    <p>The original prototype CLI was created as a .NET global tool (<code>TikTok.Console</code>) by Niels Bosma, showcasing the power of YAML-formatted output for LLM consumption. As agentic AI architectures evolved, production execution environments required cold start execution times under 3 milliseconds and zero runtime dependencies. In 2026, the tool was ported to native Rust (Edition 2024) under SpaceCorps, introducing secure OS keystore credential management, structured error envelopes, and complete multi-account support.</p>
+
+    <h2>Architectural Tenets</h2>
+    <p>TikTok CLI adheres to the SpaceCorps engineering blueprint:
+    <ul>
+      <li><strong>Native Performance:</strong> Single static binary with zero runtime bloat, sub-5ms startup times, and blocking HTTP requests via <code>ureq</code> and <code>rustls</code>.</li>
+      <li><strong>Security First:</strong> Native OS Keystore storage (macOS Keychain, Windows DPAPI, Linux Secret Service) prevents credentials from ever touching disk in plain text.</li>
+      <li><strong>Agentic Protocol:</strong> Default clean YAML output for terminal clarity, deterministic <code>--json</code> mode for agent loops and <code>jq</code> pipelines, and structured error envelopes with remediation guidance on <code>stderr</code>.</li>
+    </ul>
+    </p>
+
+    <h2>Specification & Capabilities</h2>
+    <p>TikTok CLI interfaces with the Apify platform, leveraging dedicated TikTok scrapers to collect rich video metadata, transcripts, user statistics, hashtag trends, and search queries with full control over pagination, sorting, date filters, and comment extraction.</p>
+  </div>
+</body>
+</html>

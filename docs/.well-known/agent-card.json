@@ -1,0 +1,17 @@
+{
+  "name": "TikTok CLI Agent",
+  "description": "Agent interface and high-performance scraping tool for TikTok videos, profiles, hashtags, and search results via Apify.",
+  "url": "https://spacecorps.github.io/TikTok-Cli/",
+  "version": "1.0.0",
+  "capabilities": ["tiktok-scraping", "video-metadata", "profile-scraping", "hashtag-discovery", "search"],
+  "skills": [
+    {
+      "name": "tiktok-cli",
+      "url": "https://spacecorps.github.io/TikTok-Cli/llms.txt"
+    }
+  ],
+  "contact": {
+    "email": "contact@spacecorps.dev",
+    "url": "https://spacecorps.github.io/TikTok-Cli/contact.html"
+  }
+}

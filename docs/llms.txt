@@ -1,0 +1,57 @@
+# TikTok CLI
+
+> A high-performance native command-line tool and agent interface for scraping TikTok videos, profiles, hashtags, and search results via Apify. Built in Rust for developers and autonomous AI agents.
+
+## When to Use This CLI
+
+Use the `tiktok` CLI whenever you need to:
+- **Scrape user profile videos:** Retrieve video metadata, engagement stats, captions, and links from TikTok creators and public profiles.
+- **Scrape videos by hashtag:** Extract trending videos, popular tags, and challenge participation for any hashtag.
+- **Search TikTok for videos or users:** Execute broad keyword queries across TikTok's video corpus or find user accounts directly with `--users`.
+- **Scrape specific video details:** Fetch complete metadata, music info, creator data, and comments for specific video URLs, or scrape related videos.
+- **Agentic automation:** Drive TikTok data collection deterministically via `--json` output and stable error exit codes.
+
+Do NOT use this tool if:
+- You need a visual browser automation recorder or GUI.
+- You are trying to publish or upload videos to TikTok.
+
+## Core Agent Operating Principles
+
+1. **Authentication Options:** Pass `--account <name>` (short `-a <name>`) to use tokens stored in your native OS keystore, or provide `--api-key <key>` or set `APIFY_TOKEN` / `TIKTOK_API_KEY`.
+2. **First-Time Setup:** Run `tiktok login` to authenticate with your Apify account token (opens the browser to copy an API token) or use `printf %s "$TOKEN" | tiktok accounts add default --api-key-stdin` in headless runners.
+3. **Machine-Readable Outputs:** Always supply `--json` when parsing command results in scripts or LLM tool-calling loops.
+4. **Structured Error Codes:** Non-zero exit codes carry structured error envelopes with stable machine-readable codes (`no_account`, `auth_required`, `not_found`, `rate_limited`, `invalid_input`, `network`, `error`).
+
+## Key Command Patterns
+
+### Authentication & Accounts
+- `tiktok login [name]`: Interactively authenticate and store the API token in the OS keystore.
+- `tiktok accounts add <name> --api-key <key>`: Store an account token in the native keystore.
+- `tiktok accounts list --check`: List all configured accounts and verify token validity.
+- `tiktok accounts test <name>`: Verify connectivity and inspect identity.
+
+### Profile Scraping
+- `tiktok profile <USERNAMES> --limit 10 --json`: Scrape latest 10 videos from profiles.
+- `tiktok profile <USERNAMES> --sort popular --json`: Scrape sorted by popularity.
+- `tiktok profile <USERNAMES> --since 2025-01-01 --until 2025-06-01 --json`: Filter by date range.
+- `tiktok profile <USERNAMES> --sections videos,reposts --comments 5 --json`: Include reposts and top 5 comments.
+
+### Hashtag Scraping
+- `tiktok hashtag <HASHTAGS> --limit 5 --json`: Scrape 5 videos for given hashtag.
+- `tiktok hashtag "coding,rust" --comments 10 --json`: Scrape multiple hashtags with comments.
+
+### TikTok Search
+- `tiktok search "machine learning" --limit 10 --json`: Search top videos matching query.
+- `tiktok search "tech" --users --profiles 5 --json`: Search user profiles matching keyword.
+- `tiktok search "tutorial" --section video --limit 20 --json`: Search videos section specifically.
+
+### Video URL Scraping
+- `tiktok video <URLS> --json`: Extract full metadata for specific video URLs.
+- `tiktok video <URLS> --related 5 --json`: Extract video metadata and 5 related videos.
+- `tiktok video <URLS> --comments 20 --json`: Extract video metadata with up to 20 comments.
+
+## API Specification & Documentation
+- Full Documentation: https://spacecorps.github.io/TikTok-Cli/
+- Detailed Agent Manual: https://spacecorps.github.io/TikTok-Cli/llms-full.txt
+- Apify Platform: https://apify.com
+- Upstream C# Prototype: https://github.com/nielsbosma/TikTok.Console
